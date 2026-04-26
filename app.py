@@ -183,11 +183,14 @@ if st.button("Predict"):
     explainer = shap.TreeExplainer(model_inner)
     shap_values = explainer.shap_values(X_transformed)
 
+    feature_names = preprocessor.get_feature_names_out()
+
     shap.plots.waterfall(
         shap.Explanation(
             values=shap_values[0],
             base_values=explainer.expected_value,
-            data=X_transformed[0]
+            data=X_transformed[0],
+            feature_names=feature_names
         )
     )
 
