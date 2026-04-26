@@ -69,39 +69,65 @@ st.success("Model trained successfully!")
 # ---------- UI ----------
 st.subheader("Enter passenger details")
 
+# ----------- BASIC INFO -----------
+st.markdown("### ✈️ Passenger Profile")
+
 col1, col2, col3 = st.columns(3)
 
 with col1:
     gender = st.selectbox("Gender", ["Male", "Female"])
     customer_type = st.selectbox("Customer Type", ["Loyal Customer", "disloyal Customer"])
-    age = st.slider("Age", 10, 80, 30)
-    travel_type = st.selectbox("Type of Travel", ["Business travel", "Personal Travel"])
-    travel_class = st.selectbox("Class", ["Eco", "Eco Plus", "Business"])
 
 with col2:
-    flight_distance = st.number_input("Flight Distance", 0, 5000, 500)
-    wifi = st.slider("Inflight wifi service", 0, 5, 3)
-    time_conv = st.slider("Departure/Arrival time convenient", 0, 5, 3)
-    booking = st.slider("Ease of Online booking", 0, 5, 3)
-    gate = st.slider("Gate location", 0, 5, 3)
+    age = st.slider("Age", 10, 80, 30)
+    travel_type = st.selectbox("Type of Travel", ["Business travel", "Personal Travel"])
 
 with col3:
-    food = st.slider("Food and drink", 0, 5, 3)
-    boarding = st.slider("Online boarding", 0, 5, 3)
-    seat = st.slider("Seat comfort", 0, 5, 3)
-    entertainment = st.slider("Inflight entertainment", 0, 5, 3)
-    onboard = st.slider("On-board service", 0, 5, 3)
+    travel_class = st.selectbox("Class", ["Eco", "Eco Plus", "Business"])
+    flight_distance = st.number_input("Flight Distance", 0, 5000, 500)
 
-legroom = st.slider("Leg room service", 0, 5, 3)
-baggage = st.slider("Baggage handling", 0, 5, 3)
-checkin = st.slider("Checkin service", 0, 5, 3)
-inflight = st.slider("Inflight service", 0, 5, 3)
-cleanliness = st.slider("Cleanliness", 0, 5, 3)
 
-dep_delay = st.number_input("Departure Delay (min)", 0, 1000, 0)
-arr_delay = st.number_input("Arrival Delay (min)", 0, 1000, 0)
+# ----------- SERVICE RATINGS -----------
+st.markdown("### ⭐ Service Ratings")
 
-# ---------- INPUT (FIXED!) ----------
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    wifi = st.slider("Wifi", 0, 5, 3)
+    booking = st.slider("Booking", 0, 5, 3)
+    gate = st.slider("Gate", 0, 5, 3)
+    boarding = st.slider("Boarding", 0, 5, 3)
+
+with col2:
+    seat = st.slider("Seat", 0, 5, 3)
+    entertainment = st.slider("Entertainment", 0, 5, 3)
+    onboard = st.slider("On-board", 0, 5, 3)
+    legroom = st.slider("Legroom", 0, 5, 3)
+
+with col3:
+    baggage = st.slider("Baggage", 0, 5, 3)
+    checkin = st.slider("Check-in", 0, 5, 3)
+    inflight = st.slider("Inflight", 0, 5, 3)
+    cleanliness = st.slider("Cleanliness", 0, 5, 3)
+
+
+# ----------- EXTRA -----------
+st.markdown("### ⏱ Travel Conditions")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    time_conv = st.slider("Time convenient", 0, 5, 3)
+
+with col2:
+    food = st.slider("Food", 0, 5, 3)
+
+with col3:
+    dep_delay = st.number_input("Departure Delay", 0, 1000, 0)
+    arr_delay = st.number_input("Arrival Delay", 0, 1000, 0)
+
+
+# ---------- INPUT ----------
 input_data = pd.DataFrame(columns=X.columns)
 input_data.loc[0] = 0
 
@@ -130,6 +156,7 @@ input_data["Cleanliness"] = cleanliness
 input_data["Departure Delay in Minutes"] = dep_delay
 input_data["Arrival Delay in Minutes"] = arr_delay
 
+
 # ---------- PREDICT ----------
 if st.button("Predict"):
 
@@ -137,8 +164,13 @@ if st.button("Predict"):
     proba = model.predict_proba(input_data)[0][1]
 
     st.subheader("Prediction")
-    st.write("✅ Satisfied" if pred == 1 else "❌ Not satisfied")
-    st.write(f"Probability: {proba:.2f}")
+
+    if pred == 1:
+        st.success(f"✅ Satisfied (Probability: {proba:.2f})")
+    else:
+        st.error(f"❌ Not satisfied (Probability: {proba:.2f})")
+
+    st.progress(float(proba))
 
     # ---------- SHAP ----------
     st.subheader("SHAP Explanation")
