@@ -101,31 +101,34 @@ cleanliness = st.slider("Cleanliness", 0, 5, 3)
 dep_delay = st.number_input("Departure Delay (min)", 0, 1000, 0)
 arr_delay = st.number_input("Arrival Delay (min)", 0, 1000, 0)
 
-# ---------- INPUT ----------
-input_data = pd.DataFrame([{
-    "Gender": gender,
-    "Customer Type": customer_type,
-    "Age": age,
-    "Type of Travel": travel_type,
-    "Class": travel_class,
-    "Flight Distance": flight_distance,
-    "Inflight wifi service": wifi,
-    "Departure/Arrival time convenient": time_conv,
-    "Ease of Online booking": booking,
-    "Gate location": gate,
-    "Food and drink": food,
-    "Online boarding": boarding,
-    "Seat comfort": seat,
-    "Inflight entertainment": entertainment,
-    "On-board service": onboard,
-    "Leg room service": legroom,
-    "Baggage handling": baggage,
-    "Checkin service": checkin,
-    "Inflight service": inflight,
-    "Cleanliness": cleanliness,
-    "Departure Delay in Minutes": dep_delay,
-    "Arrival Delay in Minutes": arr_delay
-}])
+# ---------- INPUT (FIXED!) ----------
+input_data = pd.DataFrame(columns=X.columns)
+input_data.loc[0] = 0
+
+input_data["Gender"] = gender
+input_data["Customer Type"] = customer_type
+input_data["Age"] = age
+input_data["Type of Travel"] = travel_type
+input_data["Class"] = travel_class
+input_data["Flight Distance"] = flight_distance
+
+input_data["Inflight wifi service"] = wifi
+input_data["Departure/Arrival time convenient"] = time_conv
+input_data["Ease of Online booking"] = booking
+input_data["Gate location"] = gate
+input_data["Food and drink"] = food
+input_data["Online boarding"] = boarding
+input_data["Seat comfort"] = seat
+input_data["Inflight entertainment"] = entertainment
+input_data["On-board service"] = onboard
+input_data["Leg room service"] = legroom
+input_data["Baggage handling"] = baggage
+input_data["Checkin service"] = checkin
+input_data["Inflight service"] = inflight
+input_data["Cleanliness"] = cleanliness
+
+input_data["Departure Delay in Minutes"] = dep_delay
+input_data["Arrival Delay in Minutes"] = arr_delay
 
 # ---------- PREDICT ----------
 if st.button("Predict"):
